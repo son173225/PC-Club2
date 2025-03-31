@@ -1,5 +1,5 @@
 async function get_GS() {
-    let response = await fetch("http://localhost:8000/api/GS/all");
+    let response = await fetch("http://192.168.50.18:8000/api/GS/all");
     if (response.ok) {
         let json = await response.json();
         return json;
@@ -12,7 +12,7 @@ async function render_GS() {
     let template = `
 <div class="card card-2" style="width: 18rem;">
     <div class="card-body">
-        <h5 class="card-title"><u>Конфигурация___________</u></h5>
+        <h5 class="card-title"><u>{NAME}</u></h5>
         <div class="acesor">
             <div style="text-decoration: underline;">
                 <p>Процессор</p>
@@ -31,12 +31,13 @@ let GSs = await get_GS();
     let container = document.getElementById("GS");
     GSs.forEach(element => {
         let GS = template
-            .replace("{ПроизводительПроцессора}", element.ПроизводительПроцессора)
-            .replace("{МодельПроцессора}", element.МодельПроцессора)
-            .replace("{ПроизводительВидеокарты}", element.ПроизводительВидеокарты)
-            .replace("{МодельВидеокарты}", element.МодельВидеокарты)
-            .replace("{ОбъёмОП}", element.ОбъёмОП)
-            .replace("{ГцОП}", element.ГцОП)
+            .replace("{ПроизводительПроцессора}", element.ManufacturerCPU)
+            .replace("{МодельПроцессора}", element.ModelCPU)
+            .replace("{ПроизводительВидеокарты}", element.ManufacturerGPU)
+            .replace("{МодельВидеокарты}", element.ModelGPU)
+            .replace("{ОбъёмОП}", element.SizeRAM)
+            .replace("{ГцОП}", element.HertzRAM)
+            .replace("{NAME}", element.NAME)
         container.innerHTML += GS;
     });
 }
