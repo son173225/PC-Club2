@@ -1,5 +1,5 @@
 async function get_GS() {
-    let response = await fetch("http://192.168.50.18:8000/api/GS/all");
+    let response = await fetch("http://localhost:8000/api/GS/all");
     if (response.ok) {
         let json = await response.json();
         return json;
