@@ -38,7 +38,15 @@ def add_GS():
         return jsonify({"message": "Error"})
 
 
-
+@app.route("/api/GS/<id>", methods=["DELETE"])
+def delete_GS(id: int):
+    if request.method == "DELETE":
+        with engine.connect() as connection:
+            query = text("DELETE FROM GS WHERE id = :id")
+            query = query.bindparams(bindparam("id", id))
+            result = connection.execute(query)
+            connection.commit()
+        return jsonify(id)
 
 def main():
     app.run("localhost", 8000, True)

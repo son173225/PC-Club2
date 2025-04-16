@@ -8,6 +8,7 @@ async function get_GS() {
     }
 }
 
+
 async function render_GS() {
     let template = `
     <tr>
@@ -19,14 +20,14 @@ async function render_GS() {
         <td>{ОбъёмОП}</td>
         <td>{ГцОП}</td>
         <td>{NAME}</td>
-    
+        <td><button onclick="deleteForm({ИД})">🗑</button></td>
     </tr>`;
-
+    
     let GSs = await get_GS();
     let container = document.getElementById("GS");
     GSs.forEach(element => {
         let GS = template
-        .replace("{ИД}", element.id)
+        .replaceAll("{ИД}", element.id)
         .replace("{ПроизводительПроцессора}", element.ManufacturerCPU)
         .replace("{МодельПроцессора}", element.ModelCPU)
         .replace("{ПроизводительВидеокарты}", element.ManufacturerGPU)
@@ -39,3 +40,22 @@ async function render_GS() {
 }
 
 render_GS();
+
+async function deleteForm(id) {
+
+ let response = await fetch("http://localhost:8000/api/GS/" + id, 
+    {         
+        method: "DELETE",    
+    });
+    if (response.ok)
+    {
+        window.location.reload()
+    }
+    else {
+        alert("Ошибка HTTP: " + response.status)
+    }
+       
+    
+       
+}
+
