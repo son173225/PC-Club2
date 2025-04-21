@@ -8,6 +8,9 @@ async function get_GS() {
     }
 }
 
+function editForm(id) {
+    window.location.href = `./edit_article.html?id=${id}`;
+}
 
 async function render_GS() {
     let template = `
@@ -20,7 +23,10 @@ async function render_GS() {
         <td>{ОбъёмОП}</td>
         <td>{ГцОП}</td>
         <td>{NAME}</td>
-        <td><button onclick="deleteForm({ИД})">🗑</button></td>
+        <td>
+            <button onclick="editForm({ИД})">✏️</button>
+            <button onclick="deleteForm({ИД})">🗑</button>
+        </td>
     </tr>`;
     
     let GSs = await get_GS();
@@ -42,7 +48,6 @@ async function render_GS() {
 render_GS();
 
 async function deleteForm(id) {
-
  let response = await fetch("http://localhost:8000/api/GS/" + id, 
     {         
         method: "DELETE",    
@@ -54,8 +59,6 @@ async function deleteForm(id) {
     else {
         alert("Ошибка HTTP: " + response.status)
     }
-       
-    
-       
+        
 }
 

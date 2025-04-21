@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование конфигурации</title>
+</head>
+<body>
+
+<form id="article_form">
+    <input type="text" name="ManufacturerCPU" placeholder="Производитель Процессора" required />
+    <input type="text" name="ModelCPU" placeholder="Модель Процессора" required />
+    <input type="text" name="ManufacturerGPU" placeholder="Производитель Видеокарты" required />
+    <input type="text" name="ModelGPU" placeholder="Модель Видеокарты" required />
+    <input type="number" name="SizeRAM" placeholder="Объём ОП (ГБ)" required />
+    <input type="number" name="HertzRAM" placeholder="Гц ОП" required />
+    <input type="text" name="Name" placeholder="Имя" required />
+    <button type="button" onclick="edit_article()">Сохранить изменения</button>
+</form>
+<script>
+
+async function loadArticle() {
+    let params = new URLSearchParams(document.location.search);
+    let id = params.get("id");
+    let response = await fetch(`http://localhost:8000/api/GS/${id}`);
+    if (response.ok) {
+        let article = await response.json();
+        document.querySelector('input[name="ManufacturerCPU"]').value = article.ManufacturerCPU;
+        document.querySelector('input[name="ModelCPU"]').value = article.ModelCPU;
+        document.querySelector('input[name="ManufacturerGPU"]').value = article.ManufacturerGPU;
+        document.querySelector('input[name="ModelGPU"]').value = article.ModelGPU;
+        document.querySelector('input[name="SizeRAM"]').value = article.SizeRAM;
+        document.querySelector('input[name="HertzRAM"]').value = article.HertzRAM;
+        document.querySelector('input[name="Name"]').value = article.NAME;
+        document.getElementById("article_form").dataset.id = id;
+        
+    } else {
+        alert("Ошибка HTTP: " + response.status);
+    }
+}
+
+async function edit_article() {
+    let formData = new FormData(document.getElementById("article_form"));
+    let id = document.getElementById("article_form").dataset.id;
+    let response = await fetch(`http://localhost:8000/api/GS/${id}`, {
+        method: "PUT",
+        body: formData
+    });
+    if (response.ok) {
+        window.location.href = "/admin/main_day.html"; 
+    } else {
+        alert("Ошибка HTTP: " + response.status);
+    }
+}
+
+loadArticle();
+</script>
+
+</body>
+</html>
